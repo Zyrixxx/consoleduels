@@ -29,3 +29,12 @@ Release/
 # Intermediate project folders
 ConsoleF.e505bbcd/
 _toolset_test/
+
+# CMake
+build/
+cmake-build-*/
+CMakeCache.txt
+CMakeFiles/
+cmake_install.cmake
+Makefile
+compile_commands.json

@@ -1,6 +1,6 @@
 #pragma once
 
-#include "../include/character.hpp"
+#include "base/character.hpp"
 #include <string>
 
 class Player : public Character
