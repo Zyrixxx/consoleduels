@@ -11,12 +11,12 @@ class Game
 public:
     void run();
 private:
-    void enterPrompt() const;
-    void welcomeScreen() const;
-    void printPlayerSelect() const;
-    void displayPlayerInfo(const Player& selectedPlayer, const Enemy& enemy) const;
+    void enterMessage() const;
+    void welcomeMessage() const;
+    void printPlayerSelect(const std::vector<Player>& players) const;
+    void displayPlayerInfo(const Player& player, const Enemy& enemy) const;
     void beginBattle(Player& player, Enemy& enemy);
     bool shouldExitGame() const;
     bool getYesOrNo(const std::string& question) const;
-    int getPlayerSelected(const std::vector<Player>& players);
+    size_t getPlayerSelected(const std::vector<Player>& players);
 };
