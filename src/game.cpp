@@ -28,37 +28,39 @@ void Game::run()
     enemy.equipWeapon(weapons.get("sword"));
 
     bool windowShouldClose{ false };
+    bool hasRestarted{ false };
 
     while (!windowShouldClose)
     {
-        enterMessage();
-        welcomeMessage();
+        if (!hasRestarted) startMessage();
 
         const auto selectedIndex = getPlayerSelected(players);
         auto& player = players[selectedIndex];
-        displayPlayerInfo(player, enemy);
+        // displayPlayerInfo(player, enemy);
 
         beginBattle(player, enemy);
         windowShouldClose = shouldExitGame();
 
-        player.resetStats();
-        enemy.resetStats();
+        restartGame(player, enemy);
+        hasRestarted = true;
     }
 }
 
-void Game::enterMessage() const {
+void Game::startMessage() const {
+    std::println("Welcome to Console Duels!\n");
     std::println("Press Enter to continue...");
     char key = std::cin.get();
     while (key != '\n') {
-        key = std::cin.get();
-    }
+         key = std::cin.get();
+     }
     clearScreen();
 }
 
-void Game::welcomeMessage() const {
-    std::println("Welcome to Console Duels!\n");
+void Game::restartGame(Player& player, Enemy& enemy) {
+    player.resetStats();
+    enemy.resetStats();
+    resetInputAfterError();
 }
-
 
 void Game::printPlayerSelect(const std::vector<Player>& players) const {
     std::println("Choose your character:\n");
@@ -74,8 +76,8 @@ size_t Game::getPlayerSelected(const std::vector<Player>& players){
     {
         printPlayerSelect(players);
         size_t playerSelection;
+        std::cin.clear();
         std::cin >> playerSelection;
-        flushInputLine();
 
         if (std::cin.fail() || playerSelection < 1 || playerSelection > players.size())
         {
@@ -85,12 +87,6 @@ size_t Game::getPlayerSelected(const std::vector<Player>& players){
         }
         return playerSelection - 1; 
     }
-}
-
-void Game::displayPlayerInfo(const Player& player, const Enemy& enemy) const {
-    clearScreen();
-    std::println("You have chosen: {}\n", player.getName());
-    std::println("You're opponent is: {}\n", enemy.getName());
 }
 
 // TODO: Get rid of this code once battle class is implemented
@@ -117,6 +113,7 @@ bool Game::shouldExitGame() const {
     if (getYesOrNo("Do you want to exit the game?")) {
         return true;
     }
+    clearScreen();
     return false;
 }
 
