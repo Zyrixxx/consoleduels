@@ -3,8 +3,8 @@
 #include <vector>
 #include <string>
 
-#include "../include/player.hpp"
-#include "../include/enemy.hpp"
+#include "characters/player.hpp"
+#include "characters/enemy.hpp"
 
 class Game
 {

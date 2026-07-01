@@ -1,5 +1,6 @@
-#include "../include/game.hpp"
-#include "../include/console_utils.hpp"
+#include "game.hpp"
+#include "utility/console_utils.hpp"
+#include "components/weapondatabase.hpp"
 
 #include <iostream>
 #include <print>
@@ -8,6 +9,9 @@
 
 void Game::run()
 {
+    WeaponDatabase weapons;
+    weapons.loadFromFile("data/weapons.json");
+
     std::vector players = {
         Player("Eric", 100, 100),
         Player("Jake", 100, 100),
@@ -15,7 +19,13 @@ void Game::run()
         Player("Terry", 100, 100)
         };
 
+    players[0].equipWeapon(weapons.get("sword"));
+    players[1].equipWeapon(weapons.get("axe"));
+    players[2].equipWeapon(weapons.get("dagger"));
+    players[3].equipWeapon(weapons.get("hammer"));
+
     auto enemy = Enemy("AI", 100, 100);
+    enemy.equipWeapon(weapons.get("sword"));
 
     bool windowShouldClose{ false };
 
@@ -88,8 +98,8 @@ void Game::beginBattle(Player& player, Enemy& enemy) {
     std::println("{} vs {}\n", player.getName(), enemy.getName());
     std::println("Let the battle begin!\n");
     while (!player.isDead() && !enemy.isDead()) {
-        player.Attack(enemy, 10);
-        enemy.Attack(player, 10);
+        player.Attack(enemy);
+        enemy.Attack(player);
     }
 
     if (player.isDead()) {

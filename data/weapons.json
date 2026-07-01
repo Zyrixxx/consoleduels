@@ -1,0 +1,9 @@
+{
+  "weapons": [
+    { "id": "fists",  "name": "Fists",        "damage": 5  },
+    { "id": "sword",  "name": "Iron Sword",   "damage": 15 },
+    { "id": "axe",    "name": "Battle Axe",   "damage": 20 },
+    { "id": "dagger", "name": "Quick Dagger", "damage": 8  },
+    { "id": "hammer", "name": "War Hammer",   "damage": 25 }
+  ]
+}
