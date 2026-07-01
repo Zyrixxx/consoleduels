@@ -13,6 +13,7 @@ add_executable(ConsoleFightingGame
     src/enemy.cpp
     src/game.cpp
     src/battle.cpp
+    src/console_utils.cpp
 )
 
 target_include_directories(ConsoleFightingGame PRIVATE

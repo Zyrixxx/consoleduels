@@ -1,8 +1,8 @@
 #include "../include/game.hpp"
+#include "../include/console_utils.hpp"
 
 #include <iostream>
 #include <print>
-#include <limits>
 #include <algorithm>
 
 
@@ -42,7 +42,7 @@ void Game::enterMessage() const {
     while (key != '\n') {
         key = std::cin.get();
     }
-    system("cls");
+    clearScreen();
 }
 
 void Game::welcomeMessage() const {
@@ -65,13 +65,11 @@ size_t Game::getPlayerSelected(const std::vector<Player>& players){
         printPlayerSelect(players);
         size_t playerSelection;
         std::cin >> playerSelection;
-        std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
+        flushInputLine();
 
         if (std::cin.fail() || playerSelection < 1 || playerSelection > players.size())
         {
-            std::cin.clear();
-            std::cin.ignore(std::numeric_limits<std::streamsize>::max(), '\n');
-            system("cls");
+            handleInputError();
             std::println("Invalid selection.\n");
             continue;
         }
@@ -80,7 +78,7 @@ size_t Game::getPlayerSelected(const std::vector<Player>& players){
 }
 
 void Game::displayPlayerInfo(const Player& player, const Enemy& enemy) const {
-    system("cls");
+    clearScreen();
     std::println("You have chosen: {}\n", player.getName());
     std::println("You're opponent is: {}\n", enemy.getName());
 }
