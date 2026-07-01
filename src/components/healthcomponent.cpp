@@ -7,20 +7,24 @@ HealthComponent::HealthComponent(int health, int maxHealth)
 
 void HealthComponent::takeDamage(int amount)
 {
-    if (amount <= 0 || isDead()) {
-        return;
-    }
+    if (amount <= 0 || isDead()) return;
 
     health_ = std::clamp(health_ - amount, 0, maxHealth_);
+    onHealthChanged_.broadcast({health_, maxHealth_});
+
+    if (isDead()) {
+        onDeath_.broadcast({true});
+        handleDeath();
+    }
 }
 
 void HealthComponent::heal(int amount)
 {
-    if (amount <= 0 || health_ >= maxHealth_) {
-        return;
-    }
+    if (amount <= 0 || health_ >= maxHealth_) return;
 
     health_ = std::clamp(health_ + amount, 0, maxHealth_);
+    onHealthChanged_.broadcast({health_, maxHealth_});
+
 }
 
 int HealthComponent::getHealth() const
@@ -36,15 +40,23 @@ bool HealthComponent::isDead() const
 void HealthComponent::resetHealth()
 {
     health_ = maxHealth_;
+    onHealthChanged_.broadcast({health_, maxHealth_});
 }
 
 void HealthComponent::setHealth(int health)
 {
     health_ = std::clamp(health, 0, maxHealth_);
+    onHealthChanged_.broadcast({health_, maxHealth_});
 }
 
 void HealthComponent::setMaxHealth(int maxHealth)
 {
     maxHealth_ = maxHealth;
     health_ = std::clamp(health_, 0, maxHealth_);
+    onHealthChanged_.broadcast({health_, maxHealth_});
+}
+
+void HealthComponent::handleDeath()
+{
+    // TODO: Implement death handling
 }

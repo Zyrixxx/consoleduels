@@ -25,6 +25,7 @@ add_executable(ConsoleFightingGame
     src/game.cpp
     src/battle.cpp
     src/utility/console_utils.cpp
+    src/presentation/consolecombatlog.cpp
 )
 
 target_include_directories(ConsoleFightingGame PRIVATE

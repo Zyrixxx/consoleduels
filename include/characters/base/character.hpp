@@ -5,10 +5,15 @@
 #include "components/healthcomponent.hpp"
 #include "components/weaponcomponent.hpp"
 #include "components/weapondata.hpp"
+#include "../../utility/event.hpp"
+#include "../../utility/gameevents.hpp"
 
 class Character {
 public:
     Character(const std::string& name, int health, int maxHealth);
+    Event<HealthChangedEvent> onHealthChanged_;
+    Event<DeathEvent> onDeath_;
+    Event<AttackEvent> onAttack_;
 
     const std::string& getName() const;
 

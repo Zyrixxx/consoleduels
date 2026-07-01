@@ -1,6 +1,7 @@
 #include "game.hpp"
 #include "utility/console_utils.hpp"
 #include "components/weapondatabase.hpp"
+#include "presentation/consolecombatlog.hpp"
 
 #include <iostream>
 #include <print>
@@ -26,6 +27,12 @@ void Game::run()
 
     auto enemy = Enemy("AI", 100, 100);
     enemy.equipWeapon(weapons.get("sword"));
+
+    ConsoleCombatLog combatLog;
+    for (auto& player : players) {
+        combatLog.bind(player);
+    }
+    combatLog.bind(enemy);
 
     bool windowShouldClose{ false };
     bool hasRestarted{ false };

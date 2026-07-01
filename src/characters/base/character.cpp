@@ -1,9 +1,17 @@
 #include "characters/base/character.hpp"
 
-#include <print>
-
 Character::Character(const std::string& name, int health, int maxHealth)
-    : name_(name), healthComponent_(health, maxHealth), weaponComponent_() {}
+    : name_(name), healthComponent_(health, maxHealth), weaponComponent_() {
+        healthComponent_.onHealthChanged_.add([this](const HealthChangedEvent& e) {
+            auto event = e;
+            onHealthChanged_.broadcast(event);
+        });
+        healthComponent_.onDeath_.add([this](const DeathEvent& e) {
+            auto event = e;
+            onDeath_.broadcast(event);
+        });
+
+    }
 
 const std::string& Character::getName() const
 {
@@ -33,17 +41,9 @@ const std::string& Character::getWeaponName() const
 void Character::Attack(Character& target)
 {
     const int amount = weaponComponent_.getDamage();
-    if (amount <= 0 || isDead() || target.isDead()) {
-        return;
-    }
-
+    if (amount <= 0 || isDead() || target.isDead()) return;
     target.TakeDamage(amount);
-    std::println("{} attacks {} with {} for {} damage.\n",
-        name_, target.getName(), weaponComponent_.getName(), amount);
-    std::println("{} now has {} health.\n", target.getName(), target.getHealth());
-    if (target.isDead()) {
-        std::println("{} has died.\n", target.getName());
-    }
+    onAttack_.broadcast({name_, target.getName(), weaponComponent_.getName(), amount});
 }
 
 void Character::TakeDamage(int amount)
