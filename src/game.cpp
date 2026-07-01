@@ -8,7 +8,7 @@
 
 void Game::run()
 {
-    std::vector<Player> players = {
+    std::vector players = {
         Player("Eric", 100, 100),
         Player("Jake", 100, 100),
         Player("Ben", 100, 100),
@@ -24,7 +24,7 @@ void Game::run()
         enterMessage();
         welcomeMessage();
 
-        size_t selectedIndex = getPlayerSelected(players);
+        const auto selectedIndex = getPlayerSelected(players);
         auto& player = players[selectedIndex];
         displayPlayerInfo(player, enemy);
 
